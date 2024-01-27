@@ -1,0 +1,4 @@
+## COPY THIS FILE TO models.yml BEFORE ADDING YOUR TOKENS
+models:
+  openai:
+    token: null  # Replace with your OpenAI token
