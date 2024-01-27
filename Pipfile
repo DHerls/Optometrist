@@ -7,6 +7,7 @@ name = "pypi"
 pillow = "*"
 openai = "*"
 requests = "*"
+pyyaml = "*"
 
 [dev-packages]
 
