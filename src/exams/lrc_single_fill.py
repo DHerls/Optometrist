@@ -1,4 +1,4 @@
-from .common import Question, Color
+from .common import Question, Color, Colors, Exam
 from ..generators.grid import create_grid, fill_grid_cell, GridOptions
 
 from dataclasses import dataclass
@@ -9,7 +9,6 @@ class Position:
     value: int
 
 
-@dataclass
 class Positions:
     LEFT = Position("LEFT", 0)
     CENTER = Position("CENTER", 1)
@@ -19,11 +18,19 @@ class Positions:
 PROMPT = """You are being shown a grid with three squares. Which one of the squares is filled in? Respond with one of LEFT, CENTER, or RIGHT."""
 
 
-def create_question(position: Position, fill: Color) -> Question:
+def create_question(position: Position, fill: Color, cell_size: int) -> Question:
 
-    grid_options = GridOptions((50, 50), (3, 1))
+    grid_options = GridOptions((cell_size, cell_size), (3, 1))
     grid = create_grid(grid_options)
 
     fill_grid_cell(grid_options, grid, (position.value, 0), fill.value, 0)
 
-    return Question(PROMPT, grid, position.name)
+    return Question(f"{position.name} {fill.name}", PROMPT, grid, position.name)
+
+
+def create_lrc_single_fill_exam(cell_size: int) -> Exam:
+
+    questions = [
+        create_question(p, f, cell_size) for p in [Positions.LEFT, Positions.CENTER, Positions.RIGHT] for f in [Colors.BLACK, Colors.RED, Colors.GREEN, Colors.BLUE]
+    ]
+    return Exam(f"lrc_single_fill_{cell_size}", questions)

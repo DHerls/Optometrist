@@ -1,10 +1,15 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 from PIL.Image import Image
 
 from io import BytesIO
 import base64
 
 class VisionModel(ABC):
+
+    @property
+    @abstractmethod
+    def name() -> str:
+        pass
 
     @abstractmethod
     def ask_question(self, prompt: str, image: Image) -> str:

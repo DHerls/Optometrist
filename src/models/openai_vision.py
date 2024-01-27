@@ -5,6 +5,8 @@ import requests
 
 class OpenAiGptVision(VisionModel):
 
+    name = "gpt-4-vision-preview"
+
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
     
@@ -40,5 +42,10 @@ class OpenAiGptVision(VisionModel):
             },
             json=payload
         )
+        if response.status_code == 200:
+            return response.json()['choices'][0]['message']['content']
+        if response.status_code == 400:
+            data = response.json()
+            return f"Error: {data['error']['code']}"
         response.raise_for_status()
-        return response.json()['choices'][0]['message']['content']
+
