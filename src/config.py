@@ -4,3 +4,4 @@ with open("models.yml") as f:
     model_config = yaml.safe_load(f)
 
 OPENAI_API_KEY = model_config['models']['openai']['api_key']
+GOOGLE_API_KEY = model_config['models']['google']['api_key']

@@ -1,4 +1,6 @@
 ## COPY THIS FILE TO models.yml BEFORE ADDING YOUR TOKENS
 models:
   openai:
-    api_key: null  # Replace with your OpenAI token
+    api_key: null  # Replace with your OpenAI API key
+  google:
+    api_key: null  # Replace with your Google Gemini API key
