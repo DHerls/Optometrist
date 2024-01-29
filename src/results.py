@@ -36,7 +36,7 @@ def save_run(results: list[Result]):
             "result_answer_matches": result.matches
         })
     
-    csv_path = run_directory.joinpath("results.csv")
+    csv_path = run_directory.joinpath(f"results_{current_time_str}.csv")
     
     with open(csv_path, "w", newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, ["result_num", "model_name", "exam_name", "question_name", "question_prompt", "question_image", "question_answer", "result_model_response", "result_timestamp", "result_duration_milli", "result_answer_matches"])

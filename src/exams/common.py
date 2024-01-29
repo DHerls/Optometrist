@@ -22,12 +22,28 @@ class Question:
     answer: str
 
 
+@dataclass
+class Position:
+    name: str
+    value: int
+
+
+class Positions:
+    LEFT = Position("LEFT", 0)
+    CENTER = Position("CENTER", 1)
+    RIGHT = Position("RIGHT", 2)
+
+
 class Colors:
     BLACK = Color("BLACK", (0, 0, 0))
     WHITE = Color("WHITE", (255, 255, 255))
     RED = Color("RED", (255, 0, 0))
     GREEN = Color("GREEN", (0, 255, 0))
     BLUE = Color("BLUE", (0, 0, 255))
+    CYAN = Color("CYAN", (0, 255, 255))
+    YELLOW = Color("YELLOW", (255, 255, 0))
+    MAGENTA = Color("MAGENTA", (255, 0, 255))
+    GREY = Color("GREY", (120, 120, 120))
 
 
 @dataclass
