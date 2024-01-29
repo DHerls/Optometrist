@@ -14,24 +14,44 @@ class Color:
     value: tuple[int, int, int]
 
 
-@dataclass
 class Question:
     name: str
     prompt: str
     image: Image
     answer: str
 
+    def __init__(self, name: str, prompt: str, image: Image, answer: str) -> None:
+        self.name = name
+        self.prompt = prompt
+        self.image = image
+        self.answer = answer
+    
+    def evaluate_response(self, model_answer: str) -> bool:
+        processed_response = model_answer.replace(' ', '').replace('.', '').lower()
+        return self.answer.lower() == processed_response
+
 
 @dataclass
-class Position:
+class XPosition:
     name: str
     value: int
 
 
-class Positions:
-    LEFT = Position("LEFT", 0)
-    CENTER = Position("CENTER", 1)
-    RIGHT = Position("RIGHT", 2)
+class XPositions:
+    LEFT = XPosition("LEFT", 0)
+    CENTER = XPosition("CENTER", 1)
+    RIGHT = XPosition("RIGHT", 2)
+
+@dataclass
+class YPosition:
+    name: str
+    value: int
+
+
+class YPositions:
+    TOP = YPosition("TOP", 0)
+    MIDDLE = YPosition("MIDDLE", 1)
+    BOTTOM = YPosition("BOTTOM", 2)
 
 
 class Colors:
@@ -70,7 +90,7 @@ class Exam:
             start = datetime.now()
             response = model.ask_question(q.prompt, q.image)
             duration = datetime.now() - start
-            answer_matches = response == q.answer
+            answer_matches = q.evaluate_response(response)
             log.info("Response: %s, Matches: %s", response, answer_matches)
             results.append(Result(model.name, self.name, q, response, answer_matches, start, duration))
         return results

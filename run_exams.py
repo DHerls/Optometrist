@@ -6,6 +6,7 @@ from src.exams.common import Exam
 from src.models.openai_vision import OpenAiGptVision
 from src.models.google_gemini import GoogleGemini
 from src.exams.dummy import create_dummy_exam
+from src.exams.alignment_chart_single import create_alignment_chart_single_fill_exam
 from src.exams.lrc_single_fill import create_lrc_single_fill_exam
 from src.exams.lrc_multi_fill import create_lrc_multi_fill_exam
 from src.results import save_run
@@ -57,6 +58,11 @@ def lrc_multi_fill(model_names: list[str], cell_sizes: list[int], **kwargs):
     evaluate(get_models(model_names), exams)
 
 
+def alignment_chart_single_fill(model_names: list[str], cell_sizes: list[int], **kwargs):
+    exams = [create_alignment_chart_single_fill_exam(size) for size in cell_sizes]
+    evaluate(get_models(model_names), exams)
+
+
 def get_models(model_names: list[str]) -> list[VisionModel]:
     return [MODELS.get(n) for n in list(set(model_names))]
 
@@ -81,6 +87,10 @@ def main():
     lrc_multi_fill_parser = subparsers.add_parser("lrc_multi_fill", help="Left-Right-Center questions, all squares is filled in")
     lrc_multi_fill_parser.add_argument("--cell-size", dest='cell_sizes', type=int, action='append', help="Specify cell size of generated images. Include more than once to test multiple sizes. Default is 10, 50 and 150.")
     lrc_multi_fill_parser.set_defaults(func=lrc_multi_fill)
+
+    alignment_chart_single_fill_parser = subparsers.add_parser("alignment_chart_single_fill", help="A 3x3 grid of squares with no coordinate system. One cell filled in.")
+    alignment_chart_single_fill_parser.add_argument("--cell-size", dest='cell_sizes', type=int, action='append', help="Specify cell size of generated images. Include more than once to test multiple sizes. Default is 10, 50 and 150.")
+    alignment_chart_single_fill_parser.set_defaults(func=alignment_chart_single_fill)
 
     args = parser.parse_args()
 
