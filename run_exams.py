@@ -7,6 +7,7 @@ from src.models.openai_vision import OpenAiGptVision
 from src.models.google_gemini import GoogleGemini
 from src.exams.dummy import create_dummy_exam
 from src.exams.alignment_chart_single import create_alignment_chart_single_fill_exam
+from src.exams.battleship_single import create_battleship_single_fill_exam
 from src.exams.lrc_single_fill import create_lrc_single_fill_exam
 from src.exams.lrc_multi_fill import create_lrc_multi_fill_exam
 from src.results import save_run
@@ -63,6 +64,11 @@ def alignment_chart_single_fill(model_names: list[str], cell_sizes: list[int], *
     evaluate(get_models(model_names), exams)
 
 
+def battleship_single_fill(model_names: list[str], cell_sizes: list[int], grid_sizes: list[int], **kwargs):
+    exams = [create_battleship_single_fill_exam(cell_size, grid_size) for cell_size in cell_sizes for grid_size in grid_sizes]
+    evaluate(get_models(model_names), exams)
+
+
 def get_models(model_names: list[str]) -> list[VisionModel]:
     return [MODELS.get(n) for n in list(set(model_names))]
 
@@ -92,6 +98,11 @@ def main():
     alignment_chart_single_fill_parser.add_argument("--cell-size", dest='cell_sizes', type=int, action='append', help="Specify cell size of generated images. Include more than once to test multiple sizes. Default is 10, 50 and 150.")
     alignment_chart_single_fill_parser.set_defaults(func=alignment_chart_single_fill)
 
+    battleship_single_fill_parser = subparsers.add_parser("battleship_single_fill", help="A variable-sized grid of squares with an alphanumeric coordinate system. One cell filled in.")
+    battleship_single_fill_parser.add_argument("--cell-size", dest='cell_sizes', type=int, action='append', help="Specify cell size of generated images. Include more than once to test multiple sizes. Default is 10, 50 and 150.")
+    battleship_single_fill_parser.add_argument("--grid-size", dest='grid_sizes', type=int, action='append', help="Specify grid size. Include more than once to test multiple sizes. Default is 4, 6 and 9.")
+    battleship_single_fill_parser.set_defaults(func=battleship_single_fill)
+
     args = parser.parse_args()
 
     if 'model_names' in args and args.model_names is None:
@@ -99,6 +110,9 @@ def main():
     
     if 'cell_sizes' in args and args.cell_sizes is None:
         args.cell_sizes = [10, 50, 150]
+    
+    if 'grid_sizes' in args and args.grid_sizes is None:
+        args.grid_sizes = [4, 6, 9]
 
     args.func(**vars(args))
 
