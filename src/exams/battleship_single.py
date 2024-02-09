@@ -27,4 +27,4 @@ def create_battleship_single_fill_exam(cell_size: int, grid_size: int) -> Exam:
         for x in range(grid_size)
         for y in range(grid_size)
     ]
-    return Exam(f"battleship_single_fill_{cell_size}", questions)
+    return Exam(f"battleship_{grid_size}x{grid_size}_{cell_size}", questions)
